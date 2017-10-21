@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Listener.cs" company="Craig">
+// <copyright file="MessageListener.cs" company="Craig">
 //   MIT
 // </copyright>
 // <summary>
@@ -19,12 +19,12 @@ namespace SpringMessagingTibcoEmsListener
     /// <summary>
     /// The Listener implementation for Spring.Messaging.Ems.Listener
     /// </summary>
-    public class Listener : ISessionAwareMessageListener
+    public class MessageListener : ISessionAwareMessageListener
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Listener"/> class.
+        /// Initializes a new instance of the <see cref="MessageListener"/> class.
         /// </summary>
-        public Listener()
+        public MessageListener()
         {
             Console.WriteLine("Listener.cs. created.");
         }

@@ -148,14 +148,18 @@ namespace SpringMessagingTibcoEmsListener
                         listenerContainer.DestinationName = DestinationName;
                         listenerContainer.ConcurrentConsumers = 1;
                         listenerContainer.PubSubDomain = false;
-                        listenerContainer.MessageListener = new Listener();
+                        listenerContainer.MessageListener = new MessageListener();
                         listenerContainer.ExceptionListener = new ExceptionListener();
                         listenerContainer.MaxRecoveryTime = new TimeSpan(MaxRecoveryTimeInDays, 0, 0, 0);
                         listenerContainer.RecoveryInterval = new TimeSpan(0, 0, 0, 10, 0); // set to 10 Minutes  
                         listenerContainer.AcceptMessagesWhileStopping = false;
                         listenerContainer.SessionAcknowledgeMode = AckMode;
                         listenerContainer.AfterPropertiesSet();
-                        Console.WriteLine("Listener started.");
+                        if (listenerContainer.IsRunning)
+                        {
+                            Console.WriteLine("Listener IsRunning.");
+                        }
+                        
                         Console.WriteLine("Press <ENTER> to exit.");
                         Console.ReadLine();
                     }
