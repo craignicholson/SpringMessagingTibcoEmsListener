@@ -1,12 +1,62 @@
 # SpringMessagingTibcoEmsListener
 
+This application listens to a Tibco EMS queue and writes the output to the console. The goal of this
+example is to test Spring.Messaging.Ems framework for working with Tibco EMS.
+
+This application builds on the [tibcoems-tutorials](https://github.com/craignicholson/tibcoems-tutorials) and you
+can use [SendTextMessage](https://github.com/craignicholson/tibcoems-tutorials/tree/master/3_SendTextMessage)
+to post a message for testing.
+
+The main purpose for using Spring.Messaging.Ems is for the feature **RefreshConnectionUntilSuccessful** which works
+better than tyring to code up native C# using the Tibco.EMS.Connection.ExceptionHandler.
+
+## Quick Start for Testing
+
+How to test recovery from a loss of the Tibco EMS Server
+
+-Start EMS Server
+-Use SendTextMessage to send first message to the queue
+-Start SpringMessagingTibcoEmsListener
+-Observe the message is delivered to SpringMessagingTibcoEmsListener
+-Stop EMS Server
+-Observe the Logging for a period of time
+-Re-start EMS Server
+-Use SendTextMessage to send second message to the queue
+-Observe the message is delivered to SpringMessagingTibcoEmsListener
+
 ## Requirements
--Tibco EMS
+
+-Tibco EMS (TIB_ems-dev_8.3.0_win_x86_64_vc10)
 -NuGets
 --Spring.Messaging.Ems
---And all other dependences 
+--And all other dependences required with Spring.Messaging.Ems
 
-https://github.com/net-commons/common-logging
+## Logging
+
+Adding this block to the App.config allows the logger Spring.net implements to be written
+to the console. You can remove this block for production applications.
+
+```xml
+
+  <configSections>
+    <sectionGroup name="common">
+      <section name="logging" type="Common.Logging.ConfigurationSectionHandler, Common.Logging" />
+    </sectionGroup>
+  </configSections>
+
+  <common>
+    <logging>
+      <factoryAdapter type="Common.Logging.Simple.ConsoleOutLoggerFactoryAdapter, Common.Logging">
+        <arg key="level" value="INFO" />
+        <arg key="showLogName" value="true" />
+        <arg key="showDateTime" value="true" />
+        <arg key="dateTimeFormat" value="yyyy/MM/dd HH:mm:ss:fff" />
+      </factoryAdapter>
+    </logging>
+  </common>
+
+
+```
 
 
 http://springframework.net/
