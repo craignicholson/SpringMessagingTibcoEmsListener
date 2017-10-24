@@ -58,6 +58,7 @@ to the console. You can remove this block for production applications.
 
 ```
 
+## Workflow for following how the RefreshConnectionUntilSuccessful works
 
 http://springframework.net/
 https://github.com/spring-projects/spring-net
@@ -66,6 +67,35 @@ https://github.com/spring-projects/spring-net/blob/ad64f00abe5ececdd47620cfdee97
 https://github.com/spring-projects/spring-net/blob/ad64f00abe5ececdd47620cfdee97243f0784bfc/src/Spring/Spring.Messaging.Nms/Messaging/Nms/Listener/AbstractListenerContainer.cs#L427
 
 https://github.com/spring-projects/spring-net/blob/ad64f00abe5ececdd47620cfdee97243f0784bfc/src/Spring/Spring.Messaging.Ems/Messaging/Ems/Listener/SimpleMessageListenerContainer.cs#L214
+2017/10/22 10:19:05:110 [ERROR] Spring.Messaging.Ems.Common.EmsConnection - No exception handler registered with EmsConnection wrapper class.
+=======================================================(inner most exception)===
+ (1) TIBCO.EMS.EMSException
+================================================================================
+Method        :  <unavailable>
+Type          :  <unavailable>
+Assembly      :  <unavailable>
+Assembly Path :  <unavailable>
+Source        :
+Thread        :  4 'EMS TCPLink Reader (Server-2)'
+Helplink      :
+
+Message:
+"Connection has been terminated"
+
+Properties:
+  EMSException.ErrorCode = ""
+  EMSException.LinkedException = "System.IO.IOException: Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host. ---> System.Net.Sockets.SocketException: An existing connection was forcibly closed by the remote host
+   at System.Net.Sockets.Socket.Receive(Byte[] buffer, Int32 offset, Int32 size, SocketFlags socketFlags)
+   at System.Net.Sockets.NetworkStream.Read(Byte[] buffer, Int32 offset, Int32 size)
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.NetworkStream.Read(Byte[] buffer, Int32 offset, Int32 size)
+   at TIBCO.EMS.LinkTcp._readEx(Byte[] buffer, Int32 offset, Int32 size)
+   at TIBCO.EMS.LinkTcp._ReadWireMsg()
+   at TIBCO.EMS.LinkTcp.LinkReader.Work()"
+
+Stack Trace:
+
+
 
 
 

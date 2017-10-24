@@ -11,6 +11,10 @@ namespace SpringMessagingTibcoEmsListener
 {
     using System;
 
+    using Common.Logging;
+
+    using Spring.Messaging.Ems.Listener;
+
     using TIBCO.EMS;
 
     /// <inheritdoc />
@@ -20,6 +24,11 @@ namespace SpringMessagingTibcoEmsListener
     /// </summary>
     public class ExceptionListener : IExceptionListener
     {
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(AbstractListenerContainer));
+
         /// <inheritdoc />
         /// <summary>
         /// The on exception.
@@ -29,18 +38,18 @@ namespace SpringMessagingTibcoEmsListener
         /// </param>
         public void OnException(EMSException exception)
         {
-            Console.WriteLine($"OnException : {exception.Message}");
+            Logger.Error($"OnException : {exception.Message}");
             if (exception.LinkedException != null)
             {
-                Console.WriteLine($"OnException Linked Exception error msg  : {exception.LinkedException.Message}");
+                Logger.Error($"OnException Linked Exception error msg  : {exception.LinkedException.Message}");
             }
 
             if (exception.InnerException != null)
             {
-                Console.WriteLine($"OnException InnerException : {exception.InnerException.Message}");
+                Logger.Error($"OnException InnerException : {exception.InnerException.Message}");
             }
 
-            Console.WriteLine($"OnException Time : {DateTime.Now:O}");
+            Logger.Error($"OnException Time : {DateTime.Now:O}");
         }
     }
 }

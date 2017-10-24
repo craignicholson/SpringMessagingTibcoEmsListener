@@ -10,6 +10,9 @@
 namespace SpringMessagingTibcoEmsListener
 {
     using System;
+
+    using Common.Logging;
+
     using Spring.Messaging.Ems.Common;
     using Spring.Messaging.Ems.Listener;
 
@@ -22,11 +25,16 @@ namespace SpringMessagingTibcoEmsListener
     public class MessageListener : ISessionAwareMessageListener
     {
         /// <summary>
+        /// The logger.
+        /// </summary>
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(AbstractListenerContainer));
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MessageListener"/> class.
         /// </summary>
         public MessageListener()
         {
-            Console.WriteLine("Listener.cs. created.");
+            Logger.Info("Listener.cs created");
         }
 
         /// <inheritdoc />
@@ -39,39 +47,45 @@ namespace SpringMessagingTibcoEmsListener
         {
             var ssnJobIdToken = message.GetStringProperty("SSN_JOB_ID_TOKEN"); 
             var ssnJobStatusToken = message.GetStringProperty("SSN_JOB_STATUS_TOKEN");  // Two states {Failure and Completed}
-            Console.WriteLine($"MessageId :{message.MessageID}");
-            Console.WriteLine($"CorrelationID :{message.CorrelationID}");
-            Console.WriteLine($"DeliveryTime :{message.DeliveryTime}");
+            Logger.Info($"JobStatus :{ssnJobStatusToken}");
+            Logger.Info($"JobId :{ssnJobIdToken}");
+            Logger.Info($"MessageId :{message.MessageID}");
+            Logger.Info($"CorrelationID :{message.CorrelationID}");
+            Logger.Info($"DeliveryTime :{message.DeliveryTime}");
             try
             {
                 switch (message)
                 {
                     case TextMessage textMessage:
-                        Console.WriteLine($"TextMessage.Text\n{textMessage.Text}");
+                        Logger.Info($"TextMessage.Text\n{textMessage.Text}");
                         break;
                     case BytesMessage byteMessage:
-                        Console.WriteLine($"BytesMessage.BodyLength : {byteMessage.BodyLength}");
+                        Logger.Info($"BytesMessage.BodyLength : {byteMessage.BodyLength}");
                         break;
                     case MapMessage mapMessage:
-                        Console.WriteLine($"MapMessage.FieldCount : {mapMessage.FieldCount}");
+                        Logger.Info($"MapMessage.FieldCount : {mapMessage.FieldCount}");
                         break;
                     case StreamMessage streamMessage:
-                        Console.WriteLine($"StreamMessage.FieldCount : {streamMessage.FieldCount}");
+                        Logger.Info($"StreamMessage.FieldCount : {streamMessage.FieldCount}");
                         break;
                     case ObjectMessage objectMessage:
-                        Console.WriteLine($"ObjectMessage.MessageID : {objectMessage.MessageID}");
+                        Logger.Info($"ObjectMessage.MessageID : {objectMessage.MessageID}");
                         break;
                 }
 
-                Console.WriteLine($"OnMessage received message : {DateTime.Now:O}");
+                Logger.Info($"OnMessage received message : {DateTime.Now:O}");
                 message.Acknowledge();
             }
             catch (Exception e)
             {
+                // If we are unable to successfully pass a message or write the message
+                // to disk set an expiration date on the missing for one day.
+                // Note, if we have 1000s of failures leaving the message on the queue will
+                // be a problem.
                 var unixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
                 var expiryTime = (DateTime.UtcNow.AddSeconds(86400) - unixEpoch).TotalMilliseconds;
                 message.Expiration = (long)expiryTime;
-                Console.WriteLine(e);
+                Logger.Error(e.Message);
                 throw;
             }
         }
