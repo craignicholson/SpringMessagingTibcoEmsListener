@@ -126,19 +126,19 @@ Exception : Cannot start Listener - Failed to connect to the server at localhost
 Press <ENTER> to exit.
 ```
 
-Kill Tibco Process
-connectionFactory initialized
-Destination - SSNODRQ
-Listener.cs. created.
-Listener started.
-Press <ENTER> to exit.
+1. Kill Tibco Process
+1. connectionFactory initialized
+1. Destination - SSNODRQ
+1. Listener.cs. created.
+1. Listener started.
+1. Press <ENTER> to exit.
+
+```bash
 OnException - Connection has been terminated
 OnException Linked Exception error msg
 Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.
 OnException Time - 2017-10-20T18:21:18.7775468-05:00
 
-
-```bash
 
 Console.WriteLine($"OnException Linked StackTrace:\n{exception.LinkedException.StackTrace}");
 OnException Linked StackTrace:
